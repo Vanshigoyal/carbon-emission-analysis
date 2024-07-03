@@ -1,8 +1,10 @@
-const fs = require('fs');
-const emissionData = require("../CO2_emission.json")
-console.log("emissionData", emissionData)
+const fs = require("fs");
+const emissionData = require("../CO2_emission.json");
+console.log("emissionData", emissionData[0]);
 class DataModel {
-    static getCarbonEmissionData() {
-        return emissionData
-    }
+  static carbonEmissionData() {
+    return emissionData;
+  }
 }
+
+module.exports = DataModel;
