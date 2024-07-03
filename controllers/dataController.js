@@ -1,11 +1,14 @@
-const dataModel = require('../models/dataModel');
+const dataModel = require("../models/dataModel");
 
-const carbonEmissionData = (req, res) => {
-    const data = dataModel.carbonEmissionData();
-    res.status(200).json(data);
-}
+const emissionDataHandler = (jsonData) => {
+  if (jsonData) {
+    dataModel.writeDataToExcel(jsonData);
+    console.log("Data written to Excel file successfully.");
+  } else {
+    console.error("Invalid data");
+  }
+};
 
 module.exports = {
-    carbonEmissionData
-}
-
+  emissionDataHandler,
+};
