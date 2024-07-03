@@ -1,12 +1,12 @@
-const express = require('express');
-const emissionRoutes = require('./routes/dataRoutes')
+const express = require("express");
 const app = express();
-require('./excel');
+const emissionJsonData = require("./CO2_emission.json");
+const dataController = require("./controllers/dataController");
 
 const PORT = process.env.PORT || 8000;
 
-app.use('/emission', emissionRoutes);
+if (!emissionJsonData.length) throw new Error("Data not found");
+
+dataController.emissionDataHandler(emissionJsonData);
 
 app.listen(PORT, () => console.log(`Server started at port ${PORT}`));
-
-
