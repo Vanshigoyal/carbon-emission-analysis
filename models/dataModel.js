@@ -1,81 +1,24 @@
-const XLSX = require("xlsx");
-var XLSXChart = require("xlsx-chart");
-var xlsxChart = new XLSXChart();
+const XLSXChart = require("xlsx-chart");
+const xlsxChart = new XLSXChart();
+const opts = require("../tempData");
 
-class DataModel {
-  static writeDataToExcel(jsonData) {
-    const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(jsonData);
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Emission-Data");
-    XLSX.writeFile(workbook, "data.xlsx");
-    return "Data written to Excel file successfully."
-  }
-
-  static generateCharts(req, res)  {
-    var opts = {
-      file: "data.xlsx",
-      chart: "column",
-      titles: ["China", "Indonesia", "Iran", "Canada"],
-      fields: [
-          "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", 
-          "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", 
-          "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"
-      ],
-      data: {
-          "China": {
-              "1990": 1823.96, "1991": 1952.78, "1992": 2068.77, "1993": 2294.12, "1994": 2414.5,
-              "1995": 2735.48, "1996": 2715.5, "1997": 2779.27, "1998": 2882.75, "1999": 2799.84,
-              "2000": 2994.73, "2001": 3194.5, "2002": 3476.08, "2003": 4081.05, "2004": 4789.59,
-              "2005": 5486.88, "2006": 6099.67, "2007": 6655.98, "2008": 6862.78, "2009": 7382.89,
-              "2010": 8138.34, "2011": 8568.09, "2012": 8823.05, "2013": 9226.51, "2014": 9184.77,
-              "2015": 9120.27, "2016": 9164.21, "2017": 9367.67, "2018": 9663.36
-          },
-          "Indonesia": {
-              "1990": 832.39, "1991": 846.23, "1992": 855.3, "1993": 869.88, "1994": 881.31,
-              "1995": 909.21, "1996": 772.38, "1997": 1484.56, "1998": 907.96, "1999": 849.42,
-              "2000": 795.62, "2001": 631.16, "2002": 1001.39, "2003": 761.93, "2004": 1031.49,
-              "2005": 829.93, "2006": 1152.83, "2007": 738.57, "2008": 731.76, "2009": 1036.71,
-              "2010": 773.92, "2011": 1285.69, "2012": 1303.87, "2013": 1250.27, "2014": 1539.23,
-              "2015": 1574.76, "2016": 1068.1, "2017": 1081.11, "2018": 1269.55
-          },
-          "Iran": {
-              "1990": 158.83, "1991": 197.26, "1992": 212.99, "1993": 210.86, "1994": 240.77,
-              "1995": 251.99, "1996": 259.83, "1997": 271, "1998": 272.42, "1999": 306,
-              "2000": 320.34, "2001": 306.74, "2002": 324.45, "2003": 346.42, "2004": 375.44,
-              "2005": 406.93, "2006": 446.5, "2007": 479.47, "2008": 489.82, "2009": 507.16,
-              "2010": 506.63, "2011": 561.73, "2012": 571.12, "2013": 592.48, "2014": 610.67,
-              "2015": 602.23, "2016": 605.81, "2017": 620.83, "2018": 629.35
-          },
-          "Canada": {
-              "1990": 483.99, "1991": 477.81, "1992": 490.88, "1993": 487.56, "1994": 503.69,
-              "1995": 514.62, "1996": 528.32, "1997": 543.72, "1998": 552.1, "1999": 560.63,
-              "2000": 580.65, "2001": 808.34, "2002": 826.9, "2003": 846.79, "2004": 838.71,
-              "2005": 851.37, "2006": 842.42, "2007": 872.59, "2008": 851.45, "2009": 822.04,
-              "2010": 836.28, "2011": 682.88, "2012": 682.31, "2013": 691.53, "2014": 697.02,
-              "2015": 693.99, "2016": 585.58, "2017": 597.4, "2018": 609.67
-          }
-      }
-  };
-  
+const generateCharts = (req, res) => {
   xlsxChart.generate(opts, function (err, data) {
-      if (err) {
-          console.log(err);
-          res.status(500).send("Error generating chart");
-          return;
-      }
-  
-      res.set({
-          "Content-Type": "application/vnd.ms-excel",
-          "Content-Disposition": "attachment; filename=chart.xlsx",
-          "Content-Length": data.length
-      });
-      res.status(200).send(data);
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error generating chart");
+      return;
+    }
+
+    res.set({
+      "Content-Type": "application/vnd.ms-excel",
+      "Content-Disposition": "attachment; filename=chart.xlsx",
+      "Content-Length": data.length,
+    });
+    res.status(200).send(data);
   });
+};
 
-  }
-}
-
-
-
-
-module.exports = DataModel;
+module.exports = {
+  generateCharts,
+};
