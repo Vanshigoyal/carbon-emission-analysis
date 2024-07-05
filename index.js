@@ -3,7 +3,7 @@ const app = express();
 const {generateCharts} = require("./models/dataModel");
 const PORT = process.env.PORT || 8000;
 
-app.get('/graphs', (req, res) => {
+app.get('/graph', (req, res) => {
     generateCharts(req, res);
 })
 
