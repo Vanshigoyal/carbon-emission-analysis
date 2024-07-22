@@ -32,7 +32,6 @@ const titles = transformTitle(jsonData);
 titles.splice(10, titles.length);
 const emissionValue = transformData(jsonData);
 const fields = transformField(jsonData);
-
 let opts = {
   file: "chart.xlsx",
   chart: "column",

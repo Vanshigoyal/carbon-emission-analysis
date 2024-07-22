@@ -1,10 +1,16 @@
 const express = require("express");
 const app = express();
+const fs = require('fs');
 const XLSXChart = require("xlsx-chart");
 const xlsxChart = new XLSXChart();
 const opts = require('./tempData');
+const db = require('./database');
 
 const PORT = process.env.PORT || 8000;
+
+app.get('/file', (req, res) => {
+   
+})
 
 app.get("/download", (req, res) =>  {
     xlsxChart.generate(opts, function (err, data) {
@@ -23,4 +29,10 @@ app.get("/download", (req, res) =>  {
 });
 
 
-app.listen(PORT, () => console.log(`Server started at port ${PORT}`));
+db.sequelize.sync().then(() => {
+  app.listen(PORT, () => console.log(`Server started at port ${PORT}`));
+
+}).catch((err) => {
+   console.error('Error while connecting databse: ', err)
+});
+
